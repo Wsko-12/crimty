@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
+const DB = require('./my_modules/database.js');
 
+DB.connectDb();
+ console.log('db connected')
 
 
 http.listen(3000,()=> {console.log( 'Server started');});
