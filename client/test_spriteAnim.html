@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>ffwe</title>
+</head>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+</style>
+
+<body style="margin:0;background-color:#1d1d1d">
+  <canvas id="canvas" style="border:1px solid red;"></canvas>
+</body>
+<script type="text/javascript">
+  let canvas = document.getElementById('canvas');
+  let ctx = canvas.getContext('2d');
+
+
+
+  let FLAGS = {
+    loadTexture: false,
+  };
+
+  window.onload = function() {
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  window.onresize = function() {
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+
+
+
+
+
+
+
+
+
+  const TEXTURES_LIB = {
+    userSprites: [{
+      type: 'sprite',
+      id: 'testID',
+      src: 'https://opengameart.org/sites/default/files/styles/medium/public/george.png',
+      frameAmountWidth: 4,
+      frameAmountHeight: 4,
+    },
+
+  ],
+  };
+
+  let loadedTextures = {};
+
+
+
+  async function LOAD_TEXTURES() {
+    for (let group in TEXTURES_LIB) {
+      loadedTextures[group] = {};
+
+      for await (let texture of TEXTURES_LIB[group]) {
+        switch (texture.type) {
+          case 'sprite':
+            loadedTextures[group][texture.id] = new Image();
+            loadedTextures[group][texture.id].src = texture.src;
+
+            loadedTextures[group][texture.id].onload = function() {
+              loadedTextures[group][texture.id].frameWidth = loadedTextures[group][texture.id].width / texture.frameAmountWidth;
+              loadedTextures[group][texture.id].frameHeight = loadedTextures[group][texture.id].height / texture.frameAmountHeight;
+            };
+
+            break;
+
+
+
+          case 'sprite':
+            break;
+          default:
+
+        };
+
+      };
+      console.log(loadedTextures.userSprites);
+      FLAGS.loadTexture = true;
+    };
+  };
+
+  LOAD_TEXTURES();
+
+
+
+
+
+
+
+
+
+  let USER = {
+    size: {
+      w: 100,
+      h: 100,
+    },
+    position: {
+      x: 0,
+      y: 0,
+      xIzo() {
+        xIzo = this.y + this.x * 0.5;
+        return xIzo
+      },
+      yIzo() {
+        yIzo = this.y - this.x * 0.5;
+        return yIzo
+      },
+    },
+    textures: {
+      body: {
+        id: 'testID',
+      },
+    },
+    move: {
+      speed: 10,
+      left: false,
+      right: false,
+      up: false,
+      down: false,
+    },
+  };
+
+
+
+
+
+
+
+
+
+  drawUser = function(user) {
+    if (FLAGS.loadTexture) {
+      userPosition = user.position
+      userTexture = loadedTextures.userSprites[user.textures.body.id];
+
+      ctx.drawImage(userTexture, 0, 0, userTexture.frameWidth, userTexture.frameHeight, userPosition.x, userPosition.y, user.size.w, user.size.h);
+    };
+
+  }
+
+
+
+  document.onkeydown = function(event) {
+    switch (event.keyCode) {
+      case 65:
+        USER.move.left = true;
+        break; //a
+      case 68:
+        USER.move.right = true;
+        break; //d
+      case 83:
+        USER.move.down = true;
+        break; //s
+      case 87:
+        USER.move.up = true;
+        break; //w
+    };
+  };
+
+  document.onkeyup = function(event) {
+    switch (event.keyCode) {
+      case 65:
+        USER.move.left = false;
+        break; //a
+      case 68:
+        USER.move.right = false;
+        break; //d
+      case 83:
+        USER.move.down = false;
+        break; //s
+      case 87:
+        USER.move.up = false;
+        break; //w
+    };
+  };
+
+
+  let playerMove = function() {
+    if (USER.move.left) {
+      USER.position.x -= USER.move.speed;
+      /* Soceket.emit position*/
+    };
+    if (USER.move.right) {
+      USER.position.x += USER.move.speed;
+      /* Soceket.emit position*/
+    };
+    if (USER.move.down) {
+      USER.position.y += USER.move.speed / 2;
+      /* Soceket.emit position*/
+    };
+    if (USER.move.up) {
+      USER.position.y -= USER.move.speed / 2;
+      /* Soceket.emit position*/
+    };
+  };
+
+
+  setInterval(function() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    playerMove();
+    drawUser(USER);
+
+
+
+  }, 45)
+</script>
+
+</html>
