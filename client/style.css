@@ -5,3 +5,55 @@ body{
   margin: 0;
   background-color: #333333;
 }
+ul{
+  list-style-type:none;
+}
+.section{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+
+
+
+.rooms__container{
+  min-width: 300px;
+  height: 400px;
+  margin: auto;
+}
+  .rooms__header{
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 20px;
+  }
+  .rooms__title{
+    color: white;
+    margin: 0;
+  }
+  .rooms__refresh{
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 1.5em;
+  }
+    .rooms__list{
+      padding-left: 0;
+
+    }
+      .rooms__list-item{
+        border: 1px solid white;
+        display: flex;
+        margin: 10px;
+        padding: 0px 10px;
+        justify-content: space-between;
+      }
+      .rooms__list-item:hover{
+        background-color: #797979;
+      }
+        .rooms__list-item__title{
+          color: white;
+        }
+        .rooms__list-item__onlineUser{
+          font-size: 0.6em;
+          color: white;
+        }

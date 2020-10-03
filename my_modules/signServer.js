@@ -1,7 +1,18 @@
+//v0.0.1
+/*
+  - Дописать скрытый пароль
+  - Добавить загрузку
+
+
+*/
+
+
+
 const DB = require('./database.js');
 
 
-let signIn = function(data, socket, ONLINE_USERS) {
+
+let signIn = function(data, socket, ONLINE_USERS, SOCKET_LIST) {
   DB.findLogin(data.login).then(result => {
     if (result === null) {
       socket.emit('userSignIn_False');
@@ -19,6 +30,7 @@ let signIn = function(data, socket, ONLINE_USERS) {
             socket: socket.id,
             id: pack.id,
           };
+          SOCKET_LIST[socket.id].appUserLogin = pack.login;
           socket.emit('userSignIn_True', pack);
         };
       };
@@ -26,11 +38,11 @@ let signIn = function(data, socket, ONLINE_USERS) {
   });
 };
 
-let signRegister = function(data, socket, ONLINE_USERS) {
+let signRegister = function(data, socket, ONLINE_USERS, SOCKET_LIST) {
   DB.findLogin(data.login).then(result => {
     if (result === null) {
       DB.registOne(data.login, data.password).then(result => {
-        signIn(result, socket, ONLINE_USERS);
+        signIn(result, socket, ONLINE_USERS, SOCKET_LIST);
       });
     } else {
       socket.emit('userSignRegistration_False')

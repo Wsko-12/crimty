@@ -22,8 +22,15 @@ function generateId(type, x) {
   };
   return id;
 };
-let client;
+let arrayToObjectBy = function(key, arr) {
+  let obj = {};
+  arr.forEach((item) => {
+    obj[item[key]] = item;
+  });
+  return obj;
+};
 
+let client;
 
 module.exports.connectDb = async function connnect() {
   client = await MongoClient.connect(uri, {
@@ -58,6 +65,9 @@ let findLogin = async function findOne(login) {
 
 
 let registOne = async function registOne(login, password) {
+  if (!client) {
+    return;
+  };
   try {
     const db = client.db("crimtyApp");
     let collection = db.collection('users');
@@ -75,5 +85,43 @@ let registOne = async function registOne(login, password) {
 
 
 
+let findAllRooms = async function findRooms() {
+  if (!client) {
+    return;
+  };
+  try {
+    const db = client.db("crimtyApp");
+    let collection = db.collection('rooms');
+
+    let result = await collection.find().toArray();
+    result.forEach((item) => {
+      delete item._id;
+    });
+
+    result = arrayToObjectBy('id', result);
+    return result;
+  } catch (err) {
+    console.log(err);
+  };
+};
+
+
+let loadTexturePack = function findAllTextures() {
+  if (!client) {
+    return;
+  };
+  try {
+    const db = client.db("crimtyApp");
+    let collection = db.collection('textures');
+
+    let result = await collection.find().toArray();
+    return result;
+  } catch (err) {
+    console.log(err);
+  };
+};
+
+
 module.exports.findLogin = findLogin;
 module.exports.registOne = registOne;
+module.exports.findAllRooms = findAllRooms;

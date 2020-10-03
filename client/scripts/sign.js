@@ -1,3 +1,11 @@
+//v0.0.2
+/*
+  - Дописать скрытый пароль
+  - Добавить загрузку
+
+
+*/
+
 const signForm = document.getElementById('signForm');
 const signRegisterButton = document.getElementById('signRegisterButton')
 signForm.onsubmit = function(e) {
@@ -17,7 +25,10 @@ signForm.onsubmit = function(e) {
 };
 
 socket.on('userSignIn_True', function(data) {
-  console.log(data);
+  //data = {id: "user_id",login: "log",}
+  document.getElementById('signSection').style.display = 'none';
+  USER = data;
+  refreshRoomsList();
 });
 
 

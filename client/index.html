@@ -8,6 +8,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     const socket = io();
+    let USER = {};
   </script>
 </head>
 
@@ -20,7 +21,24 @@
       <button type="button" id="signRegisterButton">Register</button>
     </form>
   </section>
+
+  <section class="section" id="roomsSection" style="display:none;">
+    <div class="rooms__container">
+      <div class="rooms__header">
+        <h2 class="rooms__title">Rooms:</h2>
+        <button type="button" class="rooms__refresh" onclick="refreshRoomsList()"> ↺
+          <!-- &#8634-->
+        </button>
+      </div>
+
+      <ul class="rooms__list" id="roomsList">
+      </ul>
+    </div>
+  </section>
+
 </body>
-<script type="text/javascript" src="client/scripts/sign_v0.0.1.js"></script>
+<script type="text/javascript" src="client/scripts/rooms.js"></script>
+<script type="text/javascript" src="client/scripts/sign.js"></script>
+
 
 </html>
