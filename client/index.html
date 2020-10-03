@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ru" dir="ltr">
 
 <head>
   <meta charset="utf-8">
   <title>crimty</title>
   <link rel="stylesheet" href="client/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    const socket = io();
+  </script>
 </head>
 
 <body>
-  <section class="section">
-    
+  <section class="section" id="signSection">
+    <form id="signForm">
+      <input type="text" name="login" placeholder="login">
+      <input type="password" name="password" placeholder="password">
+      <button type="submit">Sign In</button>
+      <button type="button" id="signRegisterButton">Register</button>
+    </form>
   </section>
 </body>
+<script type="text/javascript" src="client/scripts/sign_v0.0.1.js"></script>
 
 </html>
