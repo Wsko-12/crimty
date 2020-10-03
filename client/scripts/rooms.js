@@ -1,4 +1,11 @@
 //v0.0.1
+/*
+
+- добавить окна перехода
+
+
+
+*/
 
 let makeRoomList = function(object) {
   //object = {'id':{id:'id',name:'name',onlineUsers:0}};
@@ -32,12 +39,26 @@ socket.on('userRequestsRoomsList-True', function(data) {
 
 
 let connectToRoom = function(roomId) {
-  socket.emit('userConnectToRoom', roomId);
+  let pack = {
+    roomId: roomId,
+    userUploadTextures: USER_FLAGS.uploadedTextures,
+  };
+  socket.emit('userConnectToRoom', pack);
 };
 
 socket.on('userConnectToRoom-Load', function(data) {
-  //data = {textures:{},roomId:roomId}
+  //data = {textures:[],roomId:roomId}
+  if (!USER_FLAGS.uploadedTextures) {
+    TEXTURE_LIBRARY = data.textures;
+    LOAD_TEXTURES().then(result => {
+      socket.emit('userConnectToRoom-Load-True', data.roomId);
+    });
+  } else {
+    socket.emit('userConnectToRoom-Load-True', data.roomId);
+  };
+});
 
 
-  socket.emit('userConnectToRoom-Load-True', data.roomId)
+socket.on('userConnectToRoom-True', function() {
+  console.log('i coonected to the room');
 });

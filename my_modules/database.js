@@ -105,16 +105,23 @@ let findAllRooms = async function findRooms() {
   };
 };
 
+let collectTexturePack = function(globalArr) {
+  let pack = {};
+  globalArr.forEach((item) => {
+    pack[item.group] = item.textures;
+  });
+  return pack;
+};
 
-let loadTexturePack = function findAllTextures() {
+let loadTexturePack = async function findAllTextures() {
   if (!client) {
     return;
   };
   try {
     const db = client.db("crimtyApp");
     let collection = db.collection('textures');
-
     let result = await collection.find().toArray();
+    result = collectTexturePack(result);
     return result;
   } catch (err) {
     console.log(err);
@@ -125,3 +132,4 @@ let loadTexturePack = function findAllTextures() {
 module.exports.findLogin = findLogin;
 module.exports.registOne = registOne;
 module.exports.findAllRooms = findAllRooms;
+module.exports.loadTexturePack = loadTexturePack;

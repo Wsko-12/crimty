@@ -36,7 +36,7 @@ let userConnectToRoom = function(socket, roomID, ROOMS_LIST, ONLINE_USERS, SOCKE
 
   ONLINE_USERS[user.login].onRoom = roomID;
 
-  socket.emit('userConnectToRoom-True', ROOMS_LIST[roomID]);
+  socket.emit('userConnectToRoom-True', ROOMS_LIST[roomID]); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 };
 
 

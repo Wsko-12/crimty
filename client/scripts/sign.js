@@ -1,7 +1,7 @@
 //v0.0.2
 /*
   - Дописать скрытый пароль
-  - Добавить загрузку
+  - добавить окна перехода
 
 
 */
@@ -29,6 +29,7 @@ socket.on('userSignIn_True', function(data) {
   document.getElementById('signSection').style.display = 'none';
   USER = data;
   refreshRoomsList();
+  USER_FLAGS.logged = true;
 });
 
 

@@ -79,17 +79,27 @@ io.sockets.on('connection', function(socket) {
     ROOM.requestRoomList(socket, ROOMS_LIST);
   });
 
+
+
+
+
   socket.on('userConnectToRoom', function(data) {
-    //data = roomId
-    DB.loadTexturePack().then(result => {
+    //data = {roomId:roomId,userUploadTextures:true}
+    if (!data.userUploadTextures) {
+      DB.loadTexturePack().then(result => {
+        let pack = {
+          textures: result,
+          roomId: data.roomId,
+        };
+        socket.emit('userConnectToRoom-Load', pack);
+      });
+    } else {
       let pack = {
-        textures: result,
-        roomId: data,
+        roomId: data.roomId,
       };
       socket.emit('userConnectToRoom-Load', pack);
-    });
+    };
   });
-
 
   socket.on('userConnectToRoom-Load-True', function(data) {
     //data = roomId
