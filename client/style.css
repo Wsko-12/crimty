@@ -4,6 +4,7 @@
 body{
   margin: 0;
   background-color: #333333;
+  font-family: 'Quicksand', sans-serif;
 }
 ul{
   list-style-type:none;
@@ -13,7 +14,12 @@ ul{
   height: 100vh;
   display: flex;
 }
-
+#loadingScreen{
+  display: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  z-index: 100;
+}
 
 
 .rooms__container{
@@ -45,6 +51,7 @@ ul{
         display: flex;
         margin: 10px;
         padding: 0px 10px;
+        border-radius: 5px;
         justify-content: space-between;
       }
       .rooms__list-item:hover{
@@ -57,3 +64,39 @@ ul{
           font-size: 0.6em;
           color: white;
         }
+.loadtexture{
+  display: none;
+  position: fixed;
+  flex-direction: column;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+  .loadtexture__title{
+    margin:2px 0px;
+  }
+  .loadtexture__text{
+    font-weight: 200;
+    margin:0px 0px 5px;
+  }
+  .loadtexture__process{
+    width: 50px;
+    height: 5px;
+    background-color: black;
+    border-radius: 5px;
+    overflow: hidden;
+    margin:0px 0px 10px;
+  }
+    .loadtexture__process-inner{
+      width: 50%;
+      height: 100%;
+      background-color: white;
+
+    }
+  .loadtexture__process-procents{
+    font-weight: 400;
+    margin: 0;
+  }

@@ -43,12 +43,15 @@ let connectToRoom = function(roomId) {
     roomId: roomId,
     userUploadTextures: USER_FLAGS.uploadedTextures,
   };
+  loadingScreenSwitch(true);
   socket.emit('userConnectToRoom', pack);
 };
 
 socket.on('userConnectToRoom-Load', function(data) {
+
   //data = {textures:[],roomId:roomId}
   if (!USER_FLAGS.uploadedTextures) {
+    loadingScreenSwitch(false);
     TEXTURE_LIBRARY = data.textures;
     LOAD_TEXTURES().then(result => {
       socket.emit('userConnectToRoom-Load-True', data.roomId);
@@ -60,5 +63,5 @@ socket.on('userConnectToRoom-Load', function(data) {
 
 
 socket.on('userConnectToRoom-True', function() {
-  console.log('i coonected to the room');
+  loadingScreenSwitch(false);
 });

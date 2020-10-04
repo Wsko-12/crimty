@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>crimty</title>
   <link rel="stylesheet" href="client/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     const socket = io();
@@ -13,6 +14,15 @@
 </head>
 
 <body>
+  <section class="section" id="loadingScreen"></section>
+  <section class="section loadtexture" id="loadingTextureScreen">
+    <h2 class="loadtexture__title">Loading</h2>
+    <h3 class="loadtexture__text" id="loadingTextureScreen_TextureNames">texturePack : texture</h3>
+    <div class="loadtexture__process">
+      <div class="loadtexture__process-inner" id="loadingTextureScreen_TextureProcess"></div>
+    </div>
+    <h2 class="loadtexture__process-procents" id="loadingTextureScreen_GroupProcess">90%</h2>
+  </section>
   <section class="section" id="signSection">
     <form id="signForm">
       <input type="text" name="login" placeholder="login">
@@ -37,6 +47,7 @@
   </section>
 
 </body>
+<script type="text/javascript" src="client/scripts/configs/loadingScreens.js"></script>
 <script type="text/javascript" src="client/scripts/configs/flags.js"></script>
 <script type="text/javascript" src="client/scripts/configs/textures.js"></script>
 <script type="text/javascript" src="client/scripts/texturesLoading.js"></script>

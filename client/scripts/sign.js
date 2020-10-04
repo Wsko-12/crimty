@@ -9,18 +9,22 @@
 const signForm = document.getElementById('signForm');
 const signRegisterButton = document.getElementById('signRegisterButton')
 signForm.onsubmit = function(e) {
+
   e.preventDefault();
+  loadingScreenSwitch(true);
 
   let pack = {
     login: signForm.login.value,
     password: signForm.password.value,
-  }
+  };
   socket.emit('userSignIn', pack);
   socket.on('userSignIn_False', function() {
     alert('incorrect login or password');
+    loadingScreenSwitch(false);
   });
   socket.on('userSignIn_False-alreadyOnline', function() {
     alert('user is already online');
+    loadingScreenSwitch(false);
   });
 };
 
@@ -30,6 +34,7 @@ socket.on('userSignIn_True', function(data) {
   USER = data;
   refreshRoomsList();
   USER_FLAGS.logged = true;
+  loadingScreenSwitch(false);
 });
 
 
@@ -38,5 +43,6 @@ signRegisterButton.onclick = function() {
     login: signForm.login.value,
     password: signForm.password.value,
   };
+  loadingScreenSwitch(true);
   socket.emit('userSignRegistration', pack);
 };
