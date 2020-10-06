@@ -53,9 +53,7 @@ socket.on('userConnectToRoom-Load', function(data) {
   if (!USER_FLAGS.uploadedTextures) {
     loadingScreenSwitch(false);
     TEXTURE_LIBRARY = data.textures;
-    LOAD_TEXTURES().then(result => {
-      socket.emit('userConnectToRoom-Load-True', data.roomId);
-    });
+    LOAD_TEXTURES();
   } else {
     socket.emit('userConnectToRoom-Load-True', data.roomId);
   };

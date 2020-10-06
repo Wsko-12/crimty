@@ -8,70 +8,76 @@ function loadingTextureScreenSwitch(bool) {
 };
 
 
-
 let loadingTextureScreen_showTextureProcess = function(procents, group, texture) {
   let namesElemt = document.getElementById('loadingTextureScreen_TextureNames');
   let processElement = document.getElementById('loadingTextureScreen_TextureProcess');
 
-  namesElemt.innerHTML = `${group}:${texture}`;
+  namesElemt.innerHTML = `${group}: ${texture}`;
   processElement.style.width = `${procents}%`;
 };
-let loadingTextureScreen_showGroupProcess = function(procents) {
+
+
+let loadingTextureScreen_showGroupProcess = function(packProcess, texturesProcess, globalLoadingPart) {
   let element = document.getElementById('loadingTextureScreen_GroupProcess');
-  element.innerHTML = `${procents}%`;
+  let part = Math.round(packProcess / globalLoadingPart);
+  let loading = ((globalLoadingPart * part) - globalLoadingPart) + globalLoadingPart * (texturesProcess / 100);
+
+  element.innerHTML = `${Math.round(loading)}%`;
 };
-
-
-
 
 
 
 async function LOAD_TEXTURES() {
+  let globalLoadingPart = Math.floor(100 / TEXTURE_LIBRARY.length);
   loadingTextureScreenSwitch(true);
-  let groupsLength = Object.keys(TEXTURE_LIBRARY).length;
-  let groupElement = 0;
+  let packLength = TEXTURE_LIBRARY.length;
+  let packIndex = 0;
+  openPack();
 
-  for (let group in TEXTURE_LIBRARY) {
-    groupElement++;
-    let groupProcess = Math.round((groupElement * 100) / groupsLength);
-    loadingTextureScreen_showGroupProcess(groupProcess);
+  function openPack() {
 
 
+    if (TEXTURE_LIBRARY[packIndex] === undefined) {
+      console.log('load complite');
+      return;
+    };
+    let groupName = TEXTURE_LIBRARY[packIndex].group;
+    texIMG[groupName] = {};
 
-    texIMG[group] = {};
-    textureLength = TEXTURE_LIBRARY[group].length;
-    let textureElement = 0;
+    let texturePack = TEXTURE_LIBRARY[packIndex].textures;
+    let texturePackLength = texturePack.length;
+    let textureIndex = 0;
+    loadTexture();
 
-
-
-    for await (let texture of TEXTURE_LIBRARY[group]) {
-      textureElement++;
-      let textureProcess = Math.round((textureElement * 100) / textureLength);
-      loadingTextureScreen_showTextureProcess(textureProcess, group, texture.id)
-
-      switch (texture.type) {
-        case 'sprite':
-          texIMG[group][texture.id] = new Image();
-          texIMG[group][texture.id].src = texture.src;
-
-          texIMG[group][texture.id].onload = function() {
-            texIMG[group][texture.id].frameWidth = texIMG[group][texture.id].width / texture.frameAmountWidth;
-            texIMG[group][texture.id].frameHeight = texIMG[group][texture.id].height / texture.frameAmountHeight;
-          };
-
-          break;
+    function loadTexture() {
 
 
-
-        case 'asdasd':
-          break;
-        default:
-
+      let texture = TEXTURE_LIBRARY[packIndex].textures[textureIndex];
+      if (texture === undefined) {
+        packIndex++;
+        openPack();
+        return;
       };
+      let texturesProcess = Math.round(((textureIndex + 1) * 100) / texturePackLength);
+      let packProcess = Math.round(((packIndex + 1) * 100) / packLength);
 
+      loadingTextureScreen_showTextureProcess(texturesProcess, groupName, texture.id);
+      loadingTextureScreen_showGroupProcess(packProcess, texturesProcess, globalLoadingPart);
+
+      // console.log(`loading: ${texture.id}...`);
+      switch (texture.type) {
+        case 'sprite': {
+          texIMG[groupName][texture.id] = new Image();
+          texIMG[groupName][texture.id].src = texture.src;
+
+          texIMG[groupName][texture.id].onload = function() {
+            texIMG[groupName][texture.id].frameWidth = texIMG[groupName][texture.id].width / texture.frameAmountWidth;
+            texIMG[groupName][texture.id].frameHeight = texIMG[groupName][texture.id].height / texture.frameAmountHeight;
+            textureIndex++;
+            loadTexture();
+          };
+        };
+      };
     };
   };
-  //
-  // loadingTextureScreenSwitch(false);
-  return true;
 };
